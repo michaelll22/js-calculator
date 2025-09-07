@@ -1,39 +1,32 @@
-function add(arr) {
-    if (arr == null || arr.length === 0) {
-        return 0;
-    }
-    
-    return arr.reduce((total, current) => total + current);
+function add(a, b) {
+    return a + b;
 }
 
-function subtract(arr) {
-    if (arr == null || arr.length === 0) {
-        return 0;
-    }
-
-    return arr.reduce((total, current) => total - current);
+function subtract(a, b) {
+    return a - b;
 }
 
-function multiply(arr) {
-    if (arr == null || arr.length === 0) {
-        return 0;
-    }
-    return arr.reduce((total, current) => total * current);
+function multiply(a, b) {
+    return a * b;
 } 
     
 
-function divide(arr) {
-    if (arr == null || arr.length === 0) {
-        return 0;
-    }
-    return arr.reduce((total, current) => total / current);
+function divide(a, b) {
+    return a / b;
 }
 
+function operate(numOne, numTwo, operation) {
+    if (operation === "div") {
+        return divide(numOne, numTwo);
+    }
+}
 
-console.log(add([]));
-console.log(subtract([]));
-console.log(multiply([]));
-console.log(divide([]));
+let numOne = 5;
+let numTwo = 5;
+let operation = "div";
 
 
 
+// enter first num
+// select operation: 
+// enter second num: 
