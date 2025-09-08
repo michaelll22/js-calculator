@@ -1,0 +1,98 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+body, button {
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+}
+
+.calc {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 2rem 1rem;
+  border-radius: 20px;
+  background-color: rgb(189, 189, 189);
+}
+
+.row1 {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.row1 > button {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  max-height: 21px;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  border-radius: 10px;
+  text-align: right;
+  margin-bottom: 5px;
+  background-color: white;
+}
+
+.previousNum,
+.currentNum {
+  margin: auto 1rem;
+}
+
+.previousNum {
+  font-size: small;
+}
+
+.currentNum {
+  font-size: large;
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: 0 solid transparent;
+  transition: all 0.5s;
+}
+
+button:hover {
+  outline: 1px solid grey;
+}
+
+.btn {
+  padding: 25px;
+  margin: 5px;
+  max-height: 30px;
+  max-width: 25px;
+  border-radius: 50px;
+  align-self: center;
+}
+
+.num {
+  background-color: beige;
+}
+.operator,
+.equal {
+  background-color: chocolate;
+}
+
+.clear {
+  background-color: yellow;
+}
