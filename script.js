@@ -1,176 +1,112 @@
-let previousNum = "";
-let currentNum = "";
-let operator = "";
-
-const screen = document.querySelector(".screen");
-const current = document.querySelector(".currentNum");
-const previous = document.querySelector(".previousNum");
-
-window.addEventListener("keydown", handleKeyPress);
-
-const equal = document.querySelector(".equal");
-equal.addEventListener("click", () => {
-  if (currentNum != "" && previousNum != "") {
-    calculate();
-  }
-});
-
-const decimal = document.querySelector(".decimal");
-decimal.addEventListener("click", addDecimal);
-
-const clear = document.querySelector(".clear");
-clear.addEventListener("click", clearCalc);
-
-const numbers = document.querySelectorAll(".number");
-const operators = document.querySelectorAll(".operator");
-numbers.forEach((number) => {
-  number.addEventListener("click", (e) => {
-    numHandler(e.target.textContent);
-  });
-});
-
-function numHandler(num) {
-  if (previousNum !== "" && currentNum !== "" && operator === "") {
-    previousNum = "";
-    current.textContent = currentNum;
-  }
-
-  if (currentNum.length <= 11) {
-    currentNum += num;
-    current.textContent = currentNum;
-  }
-}
-
-operators.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    if (currentNum !== "") {
-      opHandler(e.target.textContent);
-    }
-  });
-});
-
-function opHandler(op) {
-  if (previousNum === "") {
-    previousNum = currentNum;
-    opCheck(op);
-  } else if (currentNum === "") {
-    opCheck(op);
-  } else {
-    calculate();
-    operator = op;
-    current.textContent = "0";
-    previous.textContent = previousNum + ` ${operator}`;
-  }
-}
-
-function opCheck(text) {
-  operator = text;
-  previous.textContent = previousNum + ` ${operator}`;
-  current.textContent = "0";
-  currentNum = "";
-}
-
-function calculate() {
-  previousNum = Number(previousNum);
-  currentNum = Number(currentNum);
-
-  if (operator === "+") {
-    previousNum = add(previousNum, currentNum);
-  }
-  if (operator === "-") {
-    previousNum = sub(previousNum, currentNum);
-  }
-  if (operator === "x") {
-    previousNum = mul(previousNum, currentNum);
-  }
-  if (operator === "/") {
-    previousNum = div(previousNum, currentNum);
-  }
-
-  previousNum = previousNum.toString();
-  displayResult();
-}
-
-function displayResult() {
-  if (previousNum.length <= 11) {
-    current.textContent = previousNum;
-  } else {
-    current.textContent = previousNum.slice(0, 11) + "...";
-  }
-  previous.textContent = "";
-  operator = "";
-  currentNum = "";
-}
-
-function clearCalc() {
-  previousNum = "";
-  currentNum = "";
-  operator = "";
-
-  current.textContent = "";
-  previous.textContent = "";
-}
-
-function addDecimal() {
-  if (!currentNum.includes(".")) {
-    currentNum += ".";
-    current.textContent = currentNum;
-  }
-}
-
-// main calc
 function add(a, b) {
   return a + b;
 }
-function sub(a, b) {
+function subtract(a, b) {
   return a - b;
 }
-function mul(a, b) {
+function multiply(a, b) {
   return a * b;
 }
-function div(a, b) {
-  if (b == 0) {
-    return "ERROR";
-  }
+function divide(a, b) {
   return a / b;
 }
 
-function handleKeyPress(e) {
-  e.preventDefault();
-  console.log(e.key);
+const numbers = document.querySelectorAll(".number");
 
-  if (e.key >= 0 && e.key <= 9) {
-    numHandler(e.key);
-  }
+const operators = document.querySelectorAll(".operator");
+const equal = document.querySelector(".equal");
+const decimal = document.querySelector(".decimal");
+const currentScreen = document.querySelector(".current");
+const previousScreen = document.querySelector(".previous");
 
-  if (e.key === "+") {
-    opHandler(e.key);
-  } else if (e.key === "-") {
-    opHandler(e.key);
-  } else if (e.key === "/") {
-    opHandler(e.key);
-  } else if (e.key === "*") {
-    opHandler("x");
-  }
+currentScreen.textContent = "0";
 
-  if (
-    e.key === "Enter" ||
-    (e.key === "=" && currentNum !== "" && previousNum !== "")
-  ) {
-    calculate();
-  }
+let currentValue = "";
+let previousValue = "";
+let operator;
+let result;
 
-  if (e.key === "Backspace") {
-    handleDelete();
+numbers.forEach((numbers) =>
+  numbers.addEventListener("click", (e) => {
+    if (result !== null && currentValue !== null) {
+      result = null;
+      currentValue = "";
+      handleNum(e);
+    } else handleNum(e);
+  })
+);
+
+operators.forEach((operator) =>
+  operator.addEventListener("click", (e) => {
+    if (!currentValue && !previousValue) return;
+    handleOp(e);
+  })
+);
+
+equal.addEventListener("click", () => {
+  if (currentValue && previousValue) handleComp(operator);
+  return;
+});
+
+decimal.addEventListener("click", handleDec);
+
+function handleNum(e) {
+  if (currentValue.split("").length === 12) {
+    return;
   }
+  let number = e.target.textContent;
+  currentValue += number;
+  currentScreen.textContent = currentValue;
 }
 
-function handleDelete() {
-  if (currentNum !== "") {
-    currentNum = currentNum.slice(0, -1);
+function handleOp(e) {
+  operator = e.target.textContent;
+
+  previousValue = currentValue;
+  currentValue = "";
+  previousScreen.textContent = `${previousValue} ${operator} `;
+  currentScreen.textContent = currentValue;
+}
+
+function handleDec() {
+  if (currentValue.includes(".")) {
+    return;
   }
-  current.textContent = currentNum;
-  if (currentNum === "") {
-    current.textContent = "0";
+
+  currentValue += ".";
+  currentScreen.textContent;
+}
+
+function handleComp(operator) {
+  let currentNum = parseFloat(currentValue);
+  let previousNum = parseFloat(previousValue);
+
+  switch (operator) {
+    case "+":
+      result = add(currentNum, previousNum);
+      break;
+
+    case "-":
+      result = subtract(currentNum, previousNum);
+      break;
+
+    case "X":
+      result = multiply(currentNum, previousNum);
+      break;
+
+    case "/":
+      result = divide(currentNum, previousNum);
+      break;
+
+    default:
+      break;
   }
+  result = result.toString();
+  if (result.split("").length === 14) {
+    result = result.splice(result.split("").length, 3) + "...";
+  }
+
+  currentValue = result;
+  previousScreen.textContent = "";
+  currentScreen.textContent = currentValue;
 }
